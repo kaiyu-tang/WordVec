@@ -3,7 +3,7 @@ import pandas as pd
 import os, sys
 import json
 from bs4 import BeautifulSoup
-#from pyhanlp import *
+# from pyhanlp import *
 import jieba.analyse
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer, TfidfVectorizer
@@ -42,7 +42,7 @@ def process_news(root_path):
 
 
 def process_keyword(data, num=100):
-    #return HanLP.extractKeyword(data[1], num)
+    # return HanLP.extractKeyword(data[1], num)
     pass
 
 
@@ -85,10 +85,15 @@ def keyword_sklearn(word_dict_path, k, data_path, stop_words):
     count = 0
     with open(data_path, "r", encoding="utf-8") as f, open("ai_key_sk_" + str(k) + ".txt", "w", encoding="utf-8") as f1:
         for line in f:
+            # words = jieba.cut(json.loads(line)["内容"])
+            # if "百度世界大会" in words:
+            #     print(list(words))
+            #     exit()
             text = " ".join(jieba.cut(json.loads(line)["内容"]))
+            # print(text)
             count += 1
-            if count == 2000:
-                break
+            # if count == 1:
+            #     exit()
             texts.append(text)
     # tf_idf = transformer.fit_transform(vectorizer.fit_transform(texts))
     print(count)
@@ -108,12 +113,14 @@ def keyword_sklearn(word_dict_path, k, data_path, stop_words):
         names = vectorizer.get_feature_names()
         keywords = pandas.Index(names)[tfidf_sorted].values
         print(tfidf_sorted.shape)
-        for i in range(5):
-            #print("\n The {} document".format(i))
+        for i in range(tfidf_sorted.shape[0]):
+            # print("\n The {} document".format(i))
             for j in range(tfidf_sorted.shape[1]):
-                print(keywords[i][j], tfidf_array[i, tfidf_sorted[i][j]], end="")
+                # print(keywords[i][j], tfidf_array[i, tfidf_sorted[i][j]], end="")
+                print(keywords[i][j], end=" ")
             print()
-    get_topk(tf_idf, tfidf_model, 10)
+    print("start print top k words")
+    #get_topk(tf_idf, tfidf_model, 20)
 
 
 def keyword_gensim(word_embedding_path, k):
@@ -151,6 +158,13 @@ def lda(data_path, stop_word_path, k=2):
         print_topk_words(lda, countvectorizer.get_feature_names(), 20)
 
 
+def word_dict(word_dict_path, weight):
+    with open(word_dict_path, "r", encoding="utf-8") as f:
+        for line in f:
+            word, _ = line.split()
+            yield word + " " + weight
+
+
 if __name__ == "__main__":
     # ai_file_path = r"/home/harry/Document/WordVec/Data/AbstractAi.data"
     # process_AI(ai_file_path)
@@ -166,8 +180,8 @@ if __name__ == "__main__":
     with open(stop_word_path, "r", encoding="utf-8") as f1:
         for word_ in f1:
             stop_words.add(word_.strip())
-    jieba.load_userdict(word_dict_path)
-    jieba.enable_parallel(4)
+    jieba.load_userdict(word_dict(word_dict_path,"100"))
+    jieba.enable_parallel(8)
     # keyword_jieba(word_dict_path,k)
     keyword_sklearn(word_dict_path, k, data_path, stop_words)
     # keyword_gensim(word_embedding_path,k)

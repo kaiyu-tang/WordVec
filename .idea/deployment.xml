@@ -1,18 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="Always" serverName="harry@170.240.110.211:4321" showNewOnSourceInSync="false">
+  <component name="PublishConfigData" autoUpload="Always" serverName="GPU_Server" filePermissions="420" folderPermissions="493" showNewOnSourceInSync="false">
     <serverData>
-      <paths name="cover">
+      <paths name="GPU_Server">
         <serverdata>
           <mappings>
-            <mapping deploy="/home/harry/Document/WordVec" local="$PROJECT_DIR$" web="/" />
-          </mappings>
-        </serverdata>
-      </paths>
-      <paths name="harry@170.240.110.211:4321">
-        <serverdata>
-          <mappings>
-            <mapping deploy="/home/harry/document/WordVec" local="$PROJECT_DIR$" />
+            <mapping deploy="/document/WordVec" local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>
